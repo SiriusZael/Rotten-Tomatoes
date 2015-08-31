@@ -14,7 +14,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     var movies: [NSDictionary]?
     var refreshControl: UIRefreshControl!
-    var lastContentOffset: CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,12 +45,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
     }
-    
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        if (scrollView.contentOffset.y > 0) {
-//            tb.frame = CGRectMake(tb.frame.origin.x, self.originalFrame.origin.y + yOffset, tb.frame.size.width, tb.frame.size.height);
-//        }
-//    }
     
     func onRefresh() {
         loadData() { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
