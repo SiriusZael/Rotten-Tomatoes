@@ -12,6 +12,7 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var synopsisLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
 
     var movie: NSDictionary!
     
@@ -20,6 +21,9 @@ class MovieDetailsViewController: UIViewController {
 
         titleLabel.text = movie["title"] as? String
         synopsisLabel.text = movie["synopsis"] as? String
+        synopsisLabel.sizeToFit()
+        var contentSizeHeight = titleLabel.frame.size.height + synopsisLabel.frame.size.height + 60
+        scrollView.contentSize = CGSizeMake(self.view.frame.width, contentSizeHeight)
         var urlString = movie.valueForKeyPath("posters.thumbnail") as! String
         var url = NSURL(string: urlString)!
         imageView.setImageWithURL(url)
