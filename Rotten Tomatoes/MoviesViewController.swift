@@ -24,16 +24,21 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         loadData() { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             HUD.dismiss()
-            var errorValue: NSError? = nil
-            let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as? NSDictionary
-            
-            if let errorValue = errorValue {
+            if let data = data {
+                self.errorView.hidden = true
+                var errorValue: NSError? = nil
+                let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as? NSDictionary
+                
+                if let errorValue = errorValue {
+                    self.errorView.hidden = false
+                }
+                
+                if let json = json {
+                    self.movies = json["movies"] as? [NSDictionary]
+                    self.tableView.reloadData()
+                }
+            } else {
                 self.errorView.hidden = false
-            }
-            
-            if let json = json {
-                self.movies = json["movies"] as? [NSDictionary]
-                self.tableView.reloadData()
             }
         }
         
@@ -49,6 +54,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func onRefresh() {
         loadData() { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             self.refreshControl.endRefreshing()
+            if let data = data {
+                self.errorView.hidden = true
+                var errorValue: NSError? = nil
+                let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &errorValue) as? NSDictionary
+                
+                if let errorValue = errorValue {
+                    self.errorView.hidden = false
+                }
+                
+                if let json = json {
+                    self.movies = json["movies"] as? [NSDictionary]
+                    self.tableView.reloadData()
+                }
+            } else {
+                self.errorView.hidden = false
+            }
         }
     }
     
